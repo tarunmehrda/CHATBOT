@@ -1,30 +1,63 @@
-# Chatbot Server Auto-Start Setup
+# 🤖 Chatbot API Server - Production Ready
 
-This guide will help you set up your chatbot server to automatically run and restart after switching your laptop.
+A robust, hosting-ready chatbot API server powered by OpenRouter and Express.js. Designed for easy deployment to any hosting platform.
 
-## Quick Start
+## ✨ Features
 
-### Option 1: Keep-Alive Mode (Recommended)
+- 🚀 **Production Ready** - Optimized for hosting platforms
+- 🛡️ **Security** - CORS, security headers, input validation
+- 📊 **Monitoring** - Health checks, request logging, error handling
+- 🔄 **Auto-Restart** - Built-in keep-alive mechanisms
+- 🌐 **Hosting Friendly** - Environment variables, graceful shutdown
+- 📦 **Docker Support** - Containerized deployment ready
 
-1. **Start with auto-restart (Batch):**
+## 🚀 Quick Start
+
+### Local Development
+
+1. **Install dependencies:**
    ```bash
-   keep-alive.bat
+   npm install
    ```
 
-2. **Start with auto-restart (PowerShell):**
+2. **Set up environment:**
    ```bash
-   npm run keep-alive
+   cp .env.example .env
+   # Edit .env with your OpenRouter API key
    ```
 
-3. **Start normally (no auto-restart):**
+3. **Start the server:**
    ```bash
+   # Development mode (with auto-reload)
+   npm run dev
+
+   # Production mode
+   npm run prod
+
+   # Simple start
    npm start
    ```
 
-4. **Development mode (with file watching):**
-   ```bash
-   npm run dev
-   ```
+### 🌐 Production Hosting
+
+See [HOSTING.md](./HOSTING.md) for detailed deployment instructions for:
+- Heroku
+- Railway
+- Vercel
+- DigitalOcean
+- VPS/Dedicated servers
+- Docker deployment
+
+### 🐳 Docker Deployment
+
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build manually
+docker build -t chatbot-api .
+docker run -p 4000:4000 --env-file .env chatbot-api
+```
 
 ### Option 2: Using Startup Scripts
 - **Batch File:** Double-click `start-server.bat` (gives you options)

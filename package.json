@@ -6,10 +6,13 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "prod": "NODE_ENV=production node index.js",
     "daemon": "node server-daemon.js",
     "keep-alive": "powershell -ExecutionPolicy Bypass -File keep-alive.ps1",
     "test": "node test-api.js",
-    "test:api": "node test-api.js"
+    "test:api": "node test-api.js",
+    "health": "curl http://localhost:4000/health || echo 'Health check failed'",
+    "logs": "echo 'Server logs will appear here when running'"
   },
   "keywords": [
     "chatbot",
