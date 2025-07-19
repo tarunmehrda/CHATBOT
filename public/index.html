@@ -183,12 +183,14 @@
                 const data = await response.json();
                 hideTyping();
 
-                if (response.ok) {
+                if (response.ok && data.reply) {
                     addMessage(data.reply);
                 } else {
+                    console.error('API Error:', data);
                     addMessage('Sorry, I encountered an error. Please try again.');
                 }
             } catch (error) {
+                console.error('Network Error:', error);
                 hideTyping();
                 addMessage('Sorry, I couldn\'t connect to the server. Please try again.');
             } finally {
