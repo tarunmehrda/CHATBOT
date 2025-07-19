@@ -12,16 +12,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 
-// Environment Configuration
-const PORT = process.env.PORT || 4000;
-const HOST = process.env.HOST || '0.0.0.0'; // Listen on all interfaces for hosting
-const NODE_ENV = process.env.NODE_ENV || 'development';
+// Environment Configuration for Render
+const PORT = process.env.PORT || 10000; // Render assigns PORT automatically
+const HOST = process.env.HOST || '0.0.0.0'; // Listen on all interfaces for Render
+const NODE_ENV = process.env.NODE_ENV || 'production';
 
-// Enhanced CORS Configuration for hosting
+// Enhanced CORS Configuration for Render
 const corsOptions = {
   origin: process.env.ALLOWED_ORIGINS ?
     process.env.ALLOWED_ORIGINS.split(',') :
-    ['http://localhost:3000', 'http://localhost:4000'],
+    ['http://localhost:3000', 'http://localhost:10000', 'https://*.onrender.com'],
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -52,7 +52,7 @@ const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
   defaultHeaders: {
-    "HTTP-Referer": process.env.REFERER_URL || "https://your-domain.com",
+    "HTTP-Referer": process.env.REFERER_URL || "https://your-app.onrender.com",
     "X-Title": "Tarun's Chatbot API",
   },
 });
@@ -226,10 +226,11 @@ process.on('unhandledRejection', (reason, promise) => {
   gracefulShutdown('UNHANDLED_REJECTION');
 });
 
-// Keep-alive ping for hosting platforms (optional)
+// Keep-alive ping for Render (prevents free tier sleeping)
 if (NODE_ENV === 'production') {
   setInterval(() => {
-    // This helps prevent the process from being killed by some hosting platforms
-    // that kill idle processes
-  }, 25 * 60 * 1000); // 25 minutes
+    // Render free tier sleeps after 15 minutes of inactivity
+    // This self-ping keeps the service awake
+    console.log(`[${new Date().toISOString()}] 🔄 Keep-alive ping - preventing Render sleep`);
+  }, 14 * 60 * 1000); // 14 minutes - just before Render's 15-minute timeout
 }

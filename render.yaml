@@ -1,0 +1,18 @@
+# Render Blueprint for Chatbot API
+# This file allows you to deploy with one click using Render's Blueprint feature
+# Optional: You can also deploy manually through the dashboard
+
+services:
+  - type: web
+    name: chatbot-api
+    env: node
+    plan: free  # Change to 'starter' for paid plan ($7/month)
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENROUTER_API_KEY
+        sync: false  # This will prompt user to enter the value during deployment
+    autoDeploy: true  # Auto-deploy on git push
