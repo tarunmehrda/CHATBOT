@@ -1,12 +1,12 @@
 // Chatbot API Server - Production Ready
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-dotenv.config();
+// API Configuration - Direct integration (no .env needed)
+const OPENROUTER_API_KEY = "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";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,19 +17,12 @@ const PORT = process.env.PORT || 10000; // Render assigns PORT automatically
 const HOST = process.env.HOST || '0.0.0.0'; // Listen on all interfaces for Render
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
-// Debug: Check if API key is loaded
-console.log('🔍 Environment Check:');
+// Debug: Configuration check
+console.log('🔍 Configuration Check:');
 console.log('- NODE_ENV:', NODE_ENV);
 console.log('- PORT:', PORT);
-console.log('- OPENROUTER_API_KEY:', process.env.OPENROUTER_API_KEY ? 'SET ✅' : 'NOT SET ❌');
-console.log('- REFERER_URL:', process.env.REFERER_URL || 'Not set (using default)');
-
-// Validate required environment variables
-if (!process.env.OPENROUTER_API_KEY) {
-  console.error('❌ FATAL ERROR: OPENROUTER_API_KEY environment variable is not set!');
-  console.error('💡 Please set OPENROUTER_API_KEY in your Render environment variables.');
-  process.exit(1);
-}
+console.log('- OPENROUTER_API_KEY:', OPENROUTER_API_KEY ? 'LOADED ✅' : 'NOT LOADED ❌');
+console.log('- API Key length:', OPENROUTER_API_KEY.length, 'characters');
 
 // Enhanced CORS Configuration for Render
 const corsOptions = {
@@ -65,9 +58,9 @@ app.use((req, res, next) => {
 console.log('🔧 Initializing OpenRouter client...');
 const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
+  apiKey: OPENROUTER_API_KEY,
   defaultHeaders: {
-    "HTTP-Referer": process.env.REFERER_URL || "https://chatbot-61bc.onrender.com",
+    "HTTP-Referer": "https://chatbot-61bc.onrender.com",
     "X-Title": "Tarun's Chatbot API",
   },
 });
