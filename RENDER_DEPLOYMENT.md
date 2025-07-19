@@ -138,10 +138,19 @@ Expected response:
 **1. Build Failed**
 ```
 Error: Build command failed
-Solution: 
+Solution:
 - Check package.json has correct dependencies
 - Ensure Node.js version compatibility (18+ recommended)
 - Check build logs for specific errors
+```
+
+**1a. Path-to-regexp Error**
+```
+Error: TypeError: Missing parameter name at 1: https://git.new/pathToRegexpError
+Solution:
+- This was fixed by downgrading Express from v5.x to v4.x
+- Make sure you're using Express ^4.21.1 (stable version)
+- Avoid Express v5.x as it's still experimental
 ```
 
 **2. Environment Variable Not Set**
