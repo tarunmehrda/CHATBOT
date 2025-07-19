@@ -1,9 +1,13 @@
-// Tarun's Chatbot API - Complete Solution for Render
+// Tarun's Chatbot API - Complete Solution with .env
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,20 +18,23 @@ const PORT = process.env.PORT || 10000;
 const HOST = '0.0.0.0';
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
-// API Key - Use environment variable OR hardcoded fallback
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "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";
+// Load API Key from environment variables
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
-// Startup validation
+// Startup validation and debugging
 console.log('🚀 Starting Tarun\'s Chatbot API...');
 console.log('- Environment:', NODE_ENV);
 console.log('- Port:', PORT);
-console.log('- API Key Source:', process.env.OPENROUTER_API_KEY ? 'Environment Variable' : 'Hardcoded');
+console.log('- .env file loaded:', dotenv ? '✅' : '❌');
+console.log('- API Key from env:', process.env.OPENROUTER_API_KEY ? '✅ Found' : '❌ Missing');
 console.log('- API Key Status:', OPENROUTER_API_KEY ? '✅ Loaded' : '❌ Missing');
-console.log('- API Key Length:', OPENROUTER_API_KEY ? OPENROUTER_API_KEY.length : 0, 'characters');
-console.log('- API Key Preview:', OPENROUTER_API_KEY ? OPENROUTER_API_KEY.substring(0, 20) + '...' : 'None');
 
-if (!OPENROUTER_API_KEY) {
-  console.error("❌ FATAL: OpenRouter API key not found!");
+if (OPENROUTER_API_KEY) {
+  console.log('- API Key Length:', OPENROUTER_API_KEY.length, 'characters');
+  console.log('- API Key Preview:', OPENROUTER_API_KEY.substring(0, 20) + '...');
+} else {
+  console.error("❌ FATAL: OPENROUTER_API_KEY not found in environment variables!");
+  console.error("💡 Make sure your .env file contains: OPENROUTER_API_KEY=your_key_here");
   process.exit(1);
 }
 
