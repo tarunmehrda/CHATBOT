@@ -14,14 +14,17 @@ const PORT = process.env.PORT || 10000;
 const HOST = '0.0.0.0';
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
-// API Key - Hardcoded for reliability (no environment variables needed)
-const OPENROUTER_API_KEY = "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";
+// API Key - Use environment variable OR hardcoded fallback
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "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";
 
 // Startup validation
 console.log('🚀 Starting Tarun\'s Chatbot API...');
 console.log('- Environment:', NODE_ENV);
 console.log('- Port:', PORT);
-console.log('- API Key:', OPENROUTER_API_KEY ? '✅ Loaded' : '❌ Missing');
+console.log('- API Key Source:', process.env.OPENROUTER_API_KEY ? 'Environment Variable' : 'Hardcoded');
+console.log('- API Key Status:', OPENROUTER_API_KEY ? '✅ Loaded' : '❌ Missing');
+console.log('- API Key Length:', OPENROUTER_API_KEY ? OPENROUTER_API_KEY.length : 0, 'characters');
+console.log('- API Key Preview:', OPENROUTER_API_KEY ? OPENROUTER_API_KEY.substring(0, 20) + '...' : 'None');
 
 if (!OPENROUTER_API_KEY) {
   console.error("❌ FATAL: OpenRouter API key not found!");
