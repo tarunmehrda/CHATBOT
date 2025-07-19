@@ -3,14 +3,23 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import OpenAI from 'openai';
 
-dotenv.config();
+// Load .env file only in development
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const app = express();
 const PORT = process.env.PORT || 6000;
 
-// Debug: Check if API key is loaded
+// Debug: Check environment and API key
+console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
 console.log('🔑 API Key loaded:', process.env.OPENROUTER_API_KEY ? 'Yes' : 'No');
-console.log('🔑 API Key starts with:', process.env.OPENROUTER_API_KEY?.substring(0, 10) + '...');
+if (process.env.OPENROUTER_API_KEY) {
+  console.log('🔑 API Key starts with:', process.env.OPENROUTER_API_KEY.substring(0, 10) + '...');
+  console.log('🔑 API Key length:', process.env.OPENROUTER_API_KEY.length);
+} else {
+  console.log('❌ OPENROUTER_API_KEY environment variable is not set!');
+}
 
 app.use(cors());
 app.use(express.json());
