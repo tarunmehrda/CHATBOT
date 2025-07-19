@@ -88,10 +88,14 @@ app.get('/api/status', (req, res) => {
 
 // Chat Endpoint with enhanced error handling
 app.post('/chat', async (req, res) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] 📨 Chat request received:`, req.body);
+
   const { message } = req.body;
 
   // Input validation
   if (!message || typeof message !== 'string') {
+    console.log(`[${timestamp}] ❌ Invalid message:`, { message, type: typeof message });
     return res.status(400).json({
       error: 'Message required',
       details: 'Message must be a non-empty string'
@@ -106,6 +110,8 @@ app.post('/chat', async (req, res) => {
   }
 
   try {
+    console.log(`[${timestamp}] 🤖 Calling OpenRouter API with message: "${message}"`);
+
     const completion = await openai.chat.completions.create({
       model: "deepseek/deepseek-chat-v3-0324:free",
       messages: [
@@ -116,19 +122,24 @@ app.post('/chat', async (req, res) => {
       temperature: 0.7
     });
 
+    console.log(`[${timestamp}] ✅ OpenRouter API response received`);
     const reply = completion.choices[0]?.message?.content;
 
     if (!reply) {
+      console.log(`[${timestamp}] ❌ No reply content in response:`, completion);
       throw new Error('No response generated');
     }
 
+    console.log(`[${timestamp}] 📤 Sending reply: "${reply.substring(0, 50)}..."`);
     res.json({
       reply,
       timestamp: new Date().toISOString(),
       model: "deepseek/deepseek-chat-v3-0324:free"
     });
   } catch (err) {
-    console.error(`[${new Date().toISOString()}] OpenRouter Error:`, err.message);
+    const errorTimestamp = new Date().toISOString();
+    console.error(`[${errorTimestamp}] ❌ OpenRouter Error:`, err.message);
+    console.error(`[${errorTimestamp}] ❌ Error details:`, err);
 
     // Don't expose internal error details in production
     const errorResponse = NODE_ENV === 'production'
