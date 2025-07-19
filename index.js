@@ -6,14 +6,22 @@ import OpenAI from 'openai';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6000;
+
+// Debug: Check if API key is loaded
+console.log('🔑 API Key loaded:', process.env.OPENROUTER_API_KEY ? 'Yes' : 'No');
+console.log('🔑 API Key starts with:', process.env.OPENROUTER_API_KEY?.substring(0, 10) + '...');
 
 app.use(cors());
 app.use(express.json());
 
 const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:6000", // Optional. Site URL for rankings on openrouter.ai.
+    "X-Title": "Fiturai Chatbot", // Optional. Site title for rankings on openrouter.ai.
+  },
 });
 
 app.get('/', (req, res) => {
@@ -26,8 +34,9 @@ app.post('/chat', async (req, res) => {
   if (!message) return res.status(400).json({ error: 'Message is required.' });
 
   try {
+    console.log('🚀 Making request to OpenRouter...');
     const response = await openai.chat.completions.create({
-      model: 'openchat/openchat-7b:free',
+      model: "deepseek/deepseek-chat-v3-0324:free",
       messages: [
         { role: 'system', content: 'You are a helpful assistant.' },
         { role: 'user', content: message },
@@ -35,9 +44,13 @@ app.post('/chat', async (req, res) => {
     });
 
     const reply = response.choices[0]?.message?.content;
+    console.log('✅ Got response from OpenRouter');
     res.json({ reply });
   } catch (err) {
-    console.error('❌ Error from OpenRouter:', err.response?.data || err.message);
+    console.error('❌ Full error object:', err);
+    console.error('❌ Error response:', err.response?.data);
+    console.error('❌ Error status:', err.response?.status);
+    console.error('❌ Error message:', err.message);
     res.status(500).json({ error: 'Failed to get a response from OpenRouter.' });
   }
 });
