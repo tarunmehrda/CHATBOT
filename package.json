@@ -1,0 +1,32 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "AI Chatbot using OpenRouter API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "daemon": "node server-daemon.js",
+    "keep-alive": "powershell -ExecutionPolicy Bypass -File keep-alive.ps1",
+    "test": "node test-api.js",
+    "test:api": "node test-api.js"
+  },
+  "keywords": [
+    "chatbot",
+    "ai",
+    "openrouter"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.10",
+    "openai": "^5.10.0"
+  }
+}

@@ -1,0 +1,4 @@
+2025-07-17 02:17 +05:30: [dotenv@17.2.0] injecting env (2) from .env (tip: 🔐 encrypt with dotenvx: https://dotenvx.com)
+2025-07-17 02:17 +05:30: ✅ Server running at: http://192.168.124.246:3000
+2025-07-17 02:17 +05:30: [dotenv@17.2.0] injecting env (2) from .env (tip: ⚙️  write to custom object with { processEnv: myObject })
+2025-07-17 02:17 +05:30: ✅ Server running at: http://192.168.124.246:3000
